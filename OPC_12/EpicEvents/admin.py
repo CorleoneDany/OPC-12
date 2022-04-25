@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Client, Contract, ContractStatus, Event
+from .models import Client, Contract, Event, ContractStatus
 
 # Register your models here.
 

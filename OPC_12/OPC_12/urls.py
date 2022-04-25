@@ -15,6 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from rest_framework.routers import DefaultRouter
+from EpicEvents.views import EventViewSet, ClientViewSet, ContractViewSet
+
+router = DefaultRouter()
+router.register('clients', ClientViewSet)
+router.register('contracts', ContractViewSet)
+router.register('events', EventViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

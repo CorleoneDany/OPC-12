@@ -29,7 +29,7 @@ class Contract(models.Model):
 
 
 class ContractStatus(models.Model):
-    signed = models.BooleanField(default=False)
+    Signed = models.BooleanField(default=False)
 
 
 class Event(models.Model):
