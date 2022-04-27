@@ -1,7 +1,7 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
-def HasClientPermission(BasePermission):
+class HasClientPermission(BasePermission):
     def has_permission(self, request, view):
         if request.user.groups.filter(name='Support'):
             return request.method in SAFE_METHODS
@@ -18,7 +18,7 @@ def HasClientPermission(BasePermission):
             return True
 
 
-def HasContractPermission(BasePermission):
+class HasContractPermission(BasePermission):
     def has_permission(self, request, view):
         return True
 
@@ -30,7 +30,7 @@ def HasContractPermission(BasePermission):
             return True
 
 
-def HasEventPermission(BasePermission):
+class HasEventPermission(BasePermission):
     def has_permission(self, request, view):
         return True
 
@@ -39,4 +39,10 @@ def HasEventPermission(BasePermission):
             if request.user == obj.sales_contact:
                 return True
         elif request.user.is_staff:
+            return True
+
+
+class HasUserPermission(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_staff:
             return True
