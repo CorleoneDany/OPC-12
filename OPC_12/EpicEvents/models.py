@@ -1,5 +1,5 @@
 from django.db import models
-from django.conf import settings
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -14,12 +14,12 @@ class Client(models.Model):
     DateCreated = models.DateTimeField(auto_now_add=True)
     DateUpdated = models.DateTimeField(auto_now=True)
     SalesContact = models.ForeignKey(
-        on_delete=models.CASCADE, to=settings.AUTH_USER_MODEL)
+        on_delete=models.CASCADE, to=User)
 
 
 class Contract(models.Model):
     SalesContact = models.ForeignKey(
-        on_delete=models.CASCADE, to=settings.AUTH_USER_MODEL)
+        on_delete=models.CASCADE, to=User)
     Client = models.ForeignKey(on_delete=models.CASCADE, to=Client)
     DateCreated = models.DateTimeField(auto_now_add=True)
     DateUpdated = models.DateTimeField(auto_now=True)
@@ -37,7 +37,7 @@ class Event(models.Model):
     DateCreated = models.DateTimeField(auto_now_add=True)
     DateUpdated = models.DateTimeField(auto_now=True)
     SupportContact = models.ForeignKey(
-        on_delete=models.CASCADE, to=settings.AUTH_USER_MODEL)
+        on_delete=models.CASCADE, to=User)
     EventStatus = models.ForeignKey(
         on_delete=models.CASCADE, to=ContractStatus)
     Attendees = models.IntegerField()

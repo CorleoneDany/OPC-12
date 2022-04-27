@@ -1,4 +1,5 @@
 from .models import Event, Client, Contract
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 
@@ -21,3 +22,10 @@ class ContractSerializer(serializers.ModelSerializer):
         model = Contract
         fields = '__all__'
         read_only_fields = ('id', 'DateCreated', 'DateUpdated')
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+        read_only_fields = ('id', 'DateJoined')
