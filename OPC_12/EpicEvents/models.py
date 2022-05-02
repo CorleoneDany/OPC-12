@@ -30,12 +30,15 @@ class Contract(models.Model):
     Amount = models.FloatField()
     PaymentDue = models.DateField()
 
+    def __str__(self):
+        return f"Contract ID: {self.id}, Client: {self.Client.FirstName} {self.Client.LastName},  Sales Contact: {self.SalesContact}"
+
 
 class ContractStatus(models.Model):
     Signed = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Contract ID: {self.id} Signed: {self.Signed}"
+        return f"Contract ID: {self.id}, Signed: {self.Signed}"
 
 
 class Event(models.Model):
@@ -49,3 +52,6 @@ class Event(models.Model):
     Attendees = models.IntegerField()
     EventDate = models.DateField()
     Notes = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"Event ID: {self.id}, Client: {self.Client.FirstName}, Support Contact: {self.SupportContact}, Event Status: {self.EventStatus}, Event Date: {self.EventDate}"
