@@ -24,3 +24,4 @@
 + Serializers
 + Permissions
 + Django-Filters
++ Postgre-SQL
