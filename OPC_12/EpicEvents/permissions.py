@@ -1,10 +1,11 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import BasePermission
+from datetime import date
 
 
 class HasClientPermission(BasePermission):
     def has_permission(self, request, view):
         if request.user.groups.filter(name='Support'):
-            return request.method in SAFE_METHODS
+            return request.method == 'GET'
         elif request.user.groups.filter(name='Sales'):
             return True
         elif request.user.is_staff or request.user.is_superuser:
@@ -12,22 +13,25 @@ class HasClientPermission(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         if request.user.groups.filter(name='Support'):
-            return request.method in SAFE_METHODS
+            return request.method == 'GET'
         elif request.user.groups.filter(name='Sales'):
             if request.user == obj.SalesContact:
-                return True
+                return request.method in ['GET', 'PUT']
         elif request.user.is_staff or request.user.is_superuser:
             return True
 
 
 class HasContractPermission(BasePermission):
     def has_permission(self, request, view):
-        return True
+        if request.user.groups.filter(name='Sales'):
+            return request.method in ['GET', 'PUT', 'POST']
+        elif request.user.is_staff or request.user.is_superuser:
+            return True
 
     def has_object_permission(self, request, view, obj):
         if request.user.groups.filter(name='Sales'):
             if request.user == obj.SalesContact:
-                return True
+                return request.method in ['GET', 'PUT']
         elif request.user.is_staff or request.user.is_superuser:
             return True
 
@@ -35,16 +39,19 @@ class HasContractPermission(BasePermission):
 class HasEventPermission(BasePermission):
     def has_permission(self, request, view):
         if request.user.groups.filter(name='Support'):
-            return request.method in SAFE_METHODS
+            return request.method in ['GET', 'PUT']
         elif request.user.groups.filter(name='Sales'):
-            return True
+            return request.method == 'POST'
         elif request.user.is_staff or request.user.is_superuser:
             return True
 
     def has_object_permission(self, request, view, obj):
         if request.user.groups.filter(name='Support'):
             if request.user == obj.SupportContact:
-                return True
+                if obj.EventDate > date.today():
+                    return request.method in ['GET', 'PUT']
+                elif obj.EventDate <= date.today():
+                    return request.method == 'GET'
         elif request.user.is_staff or request.user.is_superuser:
             return True
 
