@@ -24,7 +24,7 @@ def populate_contracts():
     for _ in range(100):
         Contract.objects.create(
             SalesContact=User.objects.get(id=f.random_int(min=1, max=3)),
-            Client=Client.objects.get(id=1),
+            Client=Client.objects.get(id=f.random_int(min=1, max=3)),
             DateCreated=f.date_time(),
             DateUpdated=f.date_time(),
             Status=True,
@@ -40,11 +40,12 @@ def populate_events():
     f = faker.Faker()
     for _ in range(100):
         Event.objects.create(
-            Client=Client.objects.get(id=1),
+            Client=Client.objects.get(id=f.random_int(min=1, max=3)),
             DateCreated=f.date_time(),
             DateUpdated=f.date_time(),
             SupportContact=User.objects.get(id=f.random_int(min=1, max=3)),
-            EventStatus=ContractStatus.objects.get(id=1),
+            EventStatus=ContractStatus.objects.get(
+                id=f.random_int(min=1, max=3)),
             Attendees=f.random_int(min=0, max=1000),
             EventDate=f.date_time(),
             Notes=f.text()
