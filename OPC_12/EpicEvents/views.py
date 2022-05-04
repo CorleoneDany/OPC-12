@@ -28,9 +28,9 @@ class EventViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.is_staff or self.request.user.is_superuser:
-            return Event.objects.all()
-        else:
-            return Event.objects.filter(SupportContact=self.request.user)
+            return Event.objects.all().order_by('id')
+        elif self.request.user.groups.filter(name='Support'):
+            return Event.objects.filter(SupportContact=self.request.user).order_by('id')
 
     def create(self, request, *args, **kwargs):
         used_contracts_ids = Event.objects.all().values_list('EventStatus__id', flat=True)
@@ -63,11 +63,11 @@ class ClientViewSet(viewsets.ModelViewSet):
             assigned_clients = Event.objects.filter(
                 SupportContact=self.request.user).values_list('Client__id', flat=True)
             if assigned_clients:
-                return Client.objects.filter(id__in=assigned_clients)
+                return Client.objects.filter(id__in=assigned_clients).order_by('id')
         elif self.request.user.is_staff or self.request.user.is_superuser:
-            return Client.objects.all()
+            return Client.objects.all().order_by('id')
         else:
-            return Client.objects.filter(SalesContact=self.request.user)
+            return Client.objects.filter(SalesContact=self.request.user).order_by('id')
 
     def create(self, request, *args, **kwargs):
         serializer = ClientSerializer(data=request.data)
@@ -90,9 +90,9 @@ class ContractViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.is_staff or self.request.user.is_superuser:
-            return Contract.objects.all()
+            return Contract.objects.all().order_by('id')
         else:
-            return Contract.objects.filter(SalesContact=self.request.user)
+            return Contract.objects.filter(SalesContact=self.request.user).order_by('id')
 
     def create(self, request, *args, **kwargs):
         serializer = ContractSerializer(data=request.data)

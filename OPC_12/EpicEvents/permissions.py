@@ -7,7 +7,7 @@ class HasClientPermission(BasePermission):
         if request.user.groups.filter(name='Support'):
             return request.method == 'GET'
         elif request.user.groups.filter(name='Sales'):
-            return True
+            return request.method in ['GET', 'POST', 'PUT']
         elif request.user.is_staff or request.user.is_superuser:
             return True
 
@@ -24,7 +24,7 @@ class HasClientPermission(BasePermission):
 class HasContractPermission(BasePermission):
     def has_permission(self, request, view):
         if request.user.groups.filter(name='Sales'):
-            return request.method in ['GET', 'PUT', 'POST']
+            return request.method in ['GET', 'POST', 'PUT']
         elif request.user.is_staff or request.user.is_superuser:
             return True
 
@@ -41,7 +41,7 @@ class HasEventPermission(BasePermission):
         if request.user.groups.filter(name='Support'):
             return request.method in ['GET', 'PUT']
         elif request.user.groups.filter(name='Sales'):
-            return request.method == 'POST'
+            return request.method in ['GET', 'POST']
         elif request.user.is_staff or request.user.is_superuser:
             return True
 
